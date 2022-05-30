@@ -1,3 +1,47 @@
-.body{
+body{
+  background-color: skyblue;
+}
+
+h1{
+  display: inline;
+}
+
+#button{
+  display: inline;
+
   background-color: coral;
+  color: black;
+
+  transition: 0.2s;
+
+  border: solid 5px skyblue;
+}
+
+#button:hover{
+  display: inline;
+
+  background-color: #ffaf70;
+  
+
+  border: solid 5px skyblue;
+}
+
+
+
+#pasword{
+  display: inline;
+  background-color: #ffaf70;
+
+  border: solid 2px black;
+
+  color: black;
+}
+
+
+#pasword::placeholder{
+  color: #000;
+}
+
+.password{
+  display: inline;
 }

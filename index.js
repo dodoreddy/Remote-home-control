@@ -1,10 +1,15 @@
-express = require('express')
-app = express()
+const express = require('express');
+const path = require('path');
 
-port = 3000
+const app = express();
+const port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+app.use(express.static('public'))
 
-app.listen(port, () => {console.log('listening on port ' + port)})
+// sendFile will go here
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/landing_page/index.html'));
+});
+
+app.listen(port);
+console.log('Server started at http://localhost:' + port);
