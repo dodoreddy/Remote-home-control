@@ -6,7 +6,7 @@ h1{
   display: inline;
 }
 
-#button{
+#btn{
   display: inline;
 
   background-color: coral;
@@ -17,7 +17,7 @@ h1{
   border: solid 5px skyblue;
 }
 
-#button:hover{
+#btn:hover{
   display: inline;
 
   background-color: #ffaf70;
