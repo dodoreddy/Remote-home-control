@@ -1,4 +1,4 @@
-var sha256 = function(ascii) {
+var sha256 = function (ascii) {
 	function rightRotate(value, amount) {
 		return (value>>>amount) | (value<<(32 - amount));
 	};
@@ -97,4 +97,3 @@ var sha256 = function(ascii) {
 
 
 
-module.exports = sha256

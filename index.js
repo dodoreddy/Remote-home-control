@@ -1,9 +1,19 @@
 //imports
 const express = require('express');
 const path = require('path');
-const socket = require('socket.io') 
-const pwd = process.env['pasword']
+const socket = require('socket.io')
+const fs = require('fs');
+pwd = process.env['pasword']
 const sha256 = require("./sha256.js");
+
+
+fs.readFile('./pwd.txt', 'utf8', (err, data) => {
+  if (err){
+    return
+  }
+  pwd = (data) 
+})
+
 
 users = []
 //port and express init
@@ -26,12 +36,13 @@ app.get('/home', function(req, res) {
   data = req.query
   id = data.id
   hash = data.hash
-
+  console.log(pwd)
+  console.log(id)
   realhash = sha256(id+pwd)
+  console.log('\n\nhash:- '+realhash+'\nGiven Hash:- '+hash)
   if (realhash == hash){
-      res.sendFile(path.join(__dirname, '/public/home/index.html'));
-  }
-  res.send("NO")
+      res.sendFile(path.join(__dirname, '/public/home/home.html'));
+  } else{res.send("NO")}
 });
 
 //starts server
@@ -46,7 +57,7 @@ io.on('connection', function(socket){
   console.log("Made a connection:- "+socket.id)
   users.push(socket.id)
   io.to(socket.id).emit('id', socket.id)
-  
+
   socket.on('pwd', function(data){
     console.log(data)
   })
