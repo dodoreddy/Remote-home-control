@@ -5,7 +5,7 @@ const socket = require('socket.io')
 const fs = require('fs');
 pwd = process.env['pasword']
 const sha256 = require("./sha256.js");
-
+const run_socket = require("./socket_connections.js")
 
 fs.readFile('./pwd.txt', 'utf8', (err, data) => {
   if (err){
@@ -14,7 +14,8 @@ fs.readFile('./pwd.txt', 'utf8', (err, data) => {
   pwd = (data) 
 })
 
-
+pwd = sha256(pwd)
+temp_no_del = toString(Math.random()*100000000000)
 users = []
 //port and express init
 const app = express();
@@ -36,13 +37,12 @@ app.get('/home', function(req, res) {
   data = req.query
   id = data.id
   hash = data.hash
-  console.log(pwd)
-  console.log(id)
   realhash = sha256(id+pwd)
-  console.log('\n\nhash:- '+realhash+'\nGiven Hash:- '+hash)
-  if (realhash == hash){
+  if (realhash == hash && (users.includes(id)) || temp_no_del == id){
       res.sendFile(path.join(__dirname, '/public/home/home.html'));
-  } else{res.send("NO")}
+  } else{
+    res.send("FAIL!")
+  }
 });
 
 //starts server
@@ -52,13 +52,26 @@ console.log('Server started at http://localhost:' + port);
 //io start
 io = socket(server)
 
+function arrayRemove(arr, value) {
+ 
+   return arr.filter(function(geeks){
+       return geeks != value;
+   });
+ 
+}
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 //socket connection
 io.on('connection', function(socket){
-  console.log("Made a connection:- "+socket.id)
   users.push(socket.id)
-  io.to(socket.id).emit('id', socket.id)
-
-  socket.on('pwd', function(data){
-    console.log(data)
+  run_socket(socket)
+  socket.on('disconnect', function(){
+    console.log(socket.id+":- Left the site")
+    temp_no_del = socket.id
   })
+  
 })
+

@@ -1,4 +1,4 @@
-socket = io.connect("http://localhost:3000")
+socket = io.connect("https://test-website.dodo135.repl.co")
 
 sessionStorage.clear()
 
@@ -7,11 +7,11 @@ pwd = document.getElementById("pasword")
 console.log(document.getElementById('btn'))
 
 button.addEventListener('click', function() {
-  socket.emit('pwd', pwd.value);
-  sessionStorage.setItem("pwd", pwd.value);
+  pwd_hash = sha256(pwd.value)
+  sessionStorage.setItem("pwd", pwd_hash);
   id = sessionStorage.getItem("id");
-  hash = sha256(id+pwd.value)
-  window.location.href = ("http://localhost:3000/home?id="+id+"&hash="+hash);
+  hash = sha256(id+pwd_hash)
+  window.location.href = ("https://test-website.dodo135.repl.co/home?id="+id+"&hash="+hash);
 })
 
 
