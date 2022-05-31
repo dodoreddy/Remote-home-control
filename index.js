@@ -12,6 +12,12 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/landing_page/index.html'));
 });
 
+app.use('/home', express.static('public/home'));
+
+app.get('/home', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/home/index.html'));
+});
+
 var server = app.listen(port);
 console.log('Server started at http://localhost:' + port);
 
