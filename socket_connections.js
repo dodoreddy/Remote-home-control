@@ -5,6 +5,7 @@ run_socket = function(socket){
 
   if(suburl == '/'){
     io.to(socket.id).emit('id', socket.id)
+  } else if('home'){
   }
 }
 

@@ -3,16 +3,21 @@ const express = require('express');
 const path = require('path');
 const socket = require('socket.io')
 const fs = require('fs');
-pwd = process.env['pasword']
+
 const sha256 = require("./sha256.js");
 const run_socket = require("./socket_connections.js")
 
+pwd = process.env['pasword']
+//pwd getter from secret file
 fs.readFile('./pwd.txt', 'utf8', (err, data) => {
   if (err){
     return
   }
   pwd = (data) 
 })
+
+no_pwd_users = 0;
+
 
 pwd = sha256(pwd)
 temp_no_del = toString(Math.random()*100000000000)
@@ -38,8 +43,12 @@ app.get('/home', function(req, res) {
   id = data.id
   hash = data.hash
   realhash = sha256(id+pwd)
-  if (realhash == hash && (users.includes(id)) || temp_no_del == id){
+  if ((realhash == hash) && (users.includes(id) || temp_no_del == id)){
+    if(no_pwd_users>1){
+      res.send("TOOOOOO MANY PPL THUS YOU SHALL NOT PASS")
+    }else{
       res.sendFile(path.join(__dirname, '/public/home/home.html'));
+    }
   } else{
     res.send("FAIL!")
   }
@@ -64,14 +73,29 @@ function sleep(ms) {
     setTimeout(resolve, ms);
   });
 }
+get_suburl = function(url){
+    regex = /(?<=(.+\/\/.*\/)).+(?=\/)/g
+    suburl = regex.exec(url)
+    if (suburl != null){
+      return suburl[0]
+    }
+    return "/"
+}
+
 //socket connection
 io.on('connection', function(socket){
   users.push(socket.id)
   run_socket(socket)
+  
+  if (get_suburl(socket.handshake.headers.referer) == "home"){
+    no_pwd_users += 1
+  }
   socket.on('disconnect', function(){
     console.log(socket.id+":- Left the site")
     temp_no_del = socket.id
   })
+
+
   
 })
 
