@@ -1,2 +1,25 @@
 body{background-color: skyblue;}
 
+#contain{
+  display: flex;
+  justify-content: center;
+  align-content: space-between;
+  height: 5vh;
+}
+
+.button{
+  margin-right:2.5%;
+  margin-left:2.5%;
+  height: 100%;
+  width: 10%;
+  background-color: coral;
+  border: solid 2px #555555;
+  border-radius: 2px;
+  
+}
+
+.button:hover{
+  background-color: #ffaf70;
+
+  border: solid 2px black;
+}

@@ -1,3 +1,4 @@
+//magic that if you understand proves you are a genius
 var sha256 = function(ascii) {
 	function rightRotate(value, amount) {
 		return (value>>>amount) | (value<<(32 - amount));
